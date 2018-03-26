@@ -7,7 +7,8 @@ package steppingstone5_recipetest;
 
 /**
  *
- * @author Jamie
+ * @author Jamie Thompson
+ * Ingredient Class
  */
 import java.util.Scanner;
 

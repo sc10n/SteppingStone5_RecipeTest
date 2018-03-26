@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 /**
  *
- * @author Jamie
+ * @author Jamie Thompson
+ * Recipe Class
  */
 public class SteppingStone5_Recipe {
 
@@ -79,7 +80,7 @@ public class SteppingStone5_Recipe {
         this.recipeIngredients = new ArrayList<>(); //<-- assignment value for empty ArrayList
         this.totalRecipeCalories = 0.0;
     }
-//    Overloaded Constructor
+//    Overloaded Constructor that brings in assigned variables to create an instance of the class.
     public SteppingStone5_Recipe(String recipeName, int servings, 
     	ArrayList<Ingredient> recipeIngredients, double totalRecipeCalories) 
     //<-- use appropriate data type for the ArrayList and the servings arguments
@@ -93,12 +94,22 @@ public class SteppingStone5_Recipe {
     public void addInstructions() {
 //        TODO: Add in custom instructions for each recipe.
     }
-    
+
+    /**
+     * This method will print the recipe to the console with the format of
+     * Recipe:
+     * Serves:
+     * Ingredients:
+     * name     amount      unit/measure    Calories    Total Calories
+     *
+     * Each serving has x Calories for a total of x Calories.
+     */
     public void printRecipe() {
 
 //        takes the double totalRecipeCalories casts it to an int, then divides by servings
          int singleServingCalories = ((int)(getTotalRecipeCalories()) / getServings());
 
+//         Print recipe information
          System.out.println("Recipe: " + getRecipeName());
          System.out.println("Serves: " + getServings());
          System.out.println("Ingredients: ");
@@ -106,20 +117,27 @@ public class SteppingStone5_Recipe {
 //         For loop: print each ingredient in the arrayList
          for (int i = 0; i < getRecipeIngredients().size(); i++) {
 
+//             Uses the accessor to to the ingredient list at the index of i
              Ingredient ingredientList = getRecipeIngredients().get(i);
-//             Build a printable list of the ingredients
+//             Build a printable list of the ingredients for easier printing
              String list = ingredientList.nameOfIngredient + "\t" + ingredientList.ingredientAmount +
                      "\t" + ingredientList.unitMeasurement + "\t" + ingredientList.numberCaloriesPerUnit +
                      " Cals \t" + ingredientList.totalCalories + " Total Calories";
 
+//             Print out the aforementioned list of ingredients that has been semi-formatted
              System.out.println(list);
          }
 
+//         Final printed statement of the recipe, uses accessors from the class to get the values
          System.out.println("Each serving has " + singleServingCalories + " Calories for a total of " +
                  (int)getTotalRecipeCalories() + " Calories.");
     }
-    
-    
+
+
+    /**
+     *
+     * @return recipe object
+     */
     public SteppingStone5_Recipe addNewRecipe() {
 
 //        Instantiate new Ingredient ArrayList
@@ -127,12 +145,16 @@ public class SteppingStone5_Recipe {
 //
 //        SteppingStone5_Recipe recipe = new SteppingStone5_Recipe();
 
+//        initialize an integer value of 0 for the servings variable
         int servings = 0;
 
+//        Instantiate a new scanner object
         Scanner scnr = new Scanner(System.in);
 
+//        Instantiate a new Ingredient object from the constructor values
         Ingredient newIngredient = new Ingredient();
 
+//        Prompt for recipe name
         System.out.println("Please enter the recipe name: ");
 
         setRecipeName(scnr.nextLine());
@@ -140,21 +162,23 @@ public class SteppingStone5_Recipe {
         System.out.println("Please enter the number of servings: ");
         //correct data type & Scanner assignment method for servings variable
 
+//        If/else nested loop for ensuring the input is an integer
         if (scnr.hasNextInt()) {
             servings = scnr.nextInt();
 
+//            As long as servers are more than 0
             if (servings >= 1) {
                 setServings(servings); // calls setter for servings
                 System.out.println("Valid entry - You entered: " + servings);
-            } else {
+            } else { // If the serving size input is 0 or less
                 System.out.println("Please enter a serving size of 1 or greater");
             }
-
+//            If its NaN, print the error
         } else {
             System.out.println("Error: That is not a number. Try again.");
             scnr.next();
         }
-        boolean addMoreIngredients = true;
+        boolean addMoreIngredients = true; // Boolean for clearing the while loop
         do {
             System.out.println("Would you like to enter an ingredient? (y or n)");
 
@@ -162,11 +186,15 @@ public class SteppingStone5_Recipe {
 
 //            Switch case for entering ingredients
             switch (reply) {
+//                Yes case, adds the new ingredient that is returned from the createIngredient method
                 case "y":
                     recipeIngredients.add(newIngredient.createIngredient());
+//                    Sets the total recipe calories using the accessor times totalCalories from the object
                     setTotalRecipeCalories(getTotalRecipeCalories() + newIngredient.totalCalories); // keep adding up the calories
+//                    Mutator to set the recipe ingredients
                     setRecipeIngredients(recipeIngredients);
                     break;
+//                    No case, uses the boolean to break out of the while loop
                 case "n":
                     addMoreIngredients = false;
                     break;
@@ -174,12 +202,13 @@ public class SteppingStone5_Recipe {
                     System.out.println("Valid answers are 'y' or 'n'"); // prompt if input doesn't equal y or n
                     break;
             }
-        } while (addMoreIngredients);
+        } while (addMoreIngredients); // Will break out when set to false
 
+//        Create the new object based on all the methods inputs from the accessors
         SteppingStone5_Recipe recipe1 = new SteppingStone5_Recipe(getRecipeName(), getServings(), recipeIngredients,
                 getTotalRecipeCalories());
         System.out.println("Recipe for " + getRecipeName() + " saved.");
-        
+//        Return the object to the calling method
         return recipe1;
     }
 
